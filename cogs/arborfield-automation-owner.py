@@ -179,7 +179,7 @@ class OwnerCog(commands.Cog, name="Owner Commands"):
         await ctx.message.delete()
         embed = discord.Embed(
             colour=discord.Color.dark_red(),
-            description='Welcome to the City of Arborfield official Discord server. Here, you can see what the city is up to and chat with other residents of the city. Announcements and events are regularly posted, so keep your eyes out!\n\nInterested in residency? Head to the <#579054644337180693> channel and follow the instructions there.\n\n[Server Invite](https://discord.gg/Kf9T6h2) \n[ROBLOX Group](https://www.roblox.com/groups/4441445/City-of-Arborfield)'
+            description='Welcome to the City of Arborfield official Discord server. Here, you can see what the city is up to and chat with other residents of the city. Announcements and events are regularly posted, so keep your eyes out!\n\nInterested in residency? Head to the <#579054644337180693> channel and follow the instructions there.\n\n[Server Invite](https://discord.gg/BbUmrpU969) \n[ROBLOX Group](https://www.roblox.com/groups/4441445/City-of-Arborfield)'
         )
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/625302673796890624/1033876953972871178/unknown.png")
         embed.set_author(name='Arborfield Information')
