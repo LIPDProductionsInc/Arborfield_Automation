@@ -152,7 +152,7 @@ class OwnerCog(commands.Cog, name="Owner Commands"):
     @commands.command(name='rules', hidden=True)
     @commands.is_owner()
     async def _rules(self, ctx):
-        channel = self.bot.get_channel(646541638763544586)
+        channel = self.bot.get_channel(625292260228988928)
         await ctx.message.delete()
         embed = discord.Embed(
             colour=discord.Colour.dark_blue(),
@@ -175,7 +175,7 @@ class OwnerCog(commands.Cog, name="Owner Commands"):
     @commands.command(name='info', hidden=True)
     @commands.is_owner()
     async def _info(self, ctx):
-        channel = self.bot.get_channel(646541638763544586)
+        channel = self.bot.get_channel(625292260228988928)
         await ctx.message.delete()
         embed = discord.Embed(
             colour=discord.Color.dark_blue(),

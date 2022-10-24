@@ -22,7 +22,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         embed.add_field(name="Deputy Mayor", value=ctx.guild.get_role(806150833842421760).members[0].mention if len(ctx.guild.get_role(806150833842421760).members) > 0 else "VACANT", inline=True)
         embed.add_field(name="Council Chairperson", value=ctx.guild.get_role(581574602212507648).members[0].mention if len(ctx.guild.get_role(581574602212507648).members) > 0 else "VACANT", inline=False)
         embed.add_field(name="City Council Members", value="\n".join([member.mention for member in ctx.guild.members if discord.utils.get(member.roles, id=581574409832366086)]), inline=True)
-        embed.set_footer(text=f"arborfield Automation | Developed by {self.bot.owner} | Information Accurate As Of:", icon_url=str(self.bot.user.avatar))
+        embed.set_footer(text=f"Arborfield Automation | Developed by {self.bot.owner} | Information Accurate As Of:", icon_url=str(self.bot.user.avatar))
         embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
         pass
