@@ -21,29 +21,38 @@ class EmergencyCog(commands.Cog, name="Arborfield Alert System Cog"):
             pass
         pass
 
-    @commands.command(name="emergency-send", description="Sends an emergency alert")
+    @commands.hybrid_command(name="emergency-send", description="Sends an emergency alert")
+    @commands.check_any(commands.has_role(578723625390309390), commands.is_owner())
+    @commands.guild_only()
     async def emergency_send(self, ctx, level:Literal["Green", "Yellow", "Red"], *, message: str = None):
-        if ctx.author == discord.utils.get(ctx.guild.roles, id=578723625390309390) or ctx.author == self.bot.owner:
-            if level == "Green":
-                embed = discord.Embed(
-                    title="Arborfield Emergency Alert System",
-                    colour=discord.Colour.green(),
-                    description="No active incidents."
-                )
-            elif level == "Yellow":
-                embed = discord.Embed(
-                    title="Arborfield Emergency Alert System",
-                    colour=discord.Colour.gold(),
-                    description=f"{message}"
-                )
-            elif level == "Red":
-                embed = discord.Embed(
-                    title="Arborfield Emergency Alert System",
-                    colour=discord.Colour.red(),
-                    description=f"{message}"
-                )
-            await ctx.send(embed=embed)
-            pass
+        channel = ctx.bot.get_channel(999011771140546600)
+        if level == "Green":
+            embed = discord.Embed(
+                title="Arborfield Emergency Alert System",
+                colour=discord.Colour.green(),
+                description="No active incidents."
+            )
+        elif level == "Yellow":
+            embed = discord.Embed(
+                title="Arborfield Emergency Alert System",
+                colour=discord.Colour.gold(),
+                description=f"{message}"
+            )
+            embed.set_footer(text=f"Issued by {ctx.author} at")
+            embed.timestamp = datetime.datetime.utcnow()
+        elif level == "Red":
+            embed = discord.Embed(
+                title="Arborfield Emergency Alert System",
+                colour=discord.Colour.red(),
+                description=f"**Active Emergency**\n\n{message}"
+            )
+            embed.set_footer(text=f"Issued by {ctx.author} at")
+            embed.timestamp = datetime.datetime.utcnow()
+            await ctx.send("Alert sent!", ephemeral=True)
+        if ctx.channel.id == 999011771140546600:
+            if ctx.interaction == None:
+                await ctx.message.delete()
+        await channel.send(embed=embed)
         pass
 
 async def setup(bot):
