@@ -47,7 +47,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     async def session(self, ctx, session_type:Literal["In-Game", "Discord"]):
         if session_type == "In-Game":
             channel = ctx.bot.get_channel(646541531523710996)
-            await channel.send(f"**An in-game City Council Session is starting.**\n\nPlease join at the following link: <Link Here> \n\n@here")
+            await channel.send(f"**An in-game City Council Session is starting.**\n\nPlease join at the following link: <https://www.roblox.com/games/579211007/Stapleton-County-Firestone> \n\n@here")
         elif session_type == "Discord":
             channel = ctx.bot.get_channel(854761365150629898)
             channel2 = ctx.bot.get_channel(625302673796890624)
