@@ -18,6 +18,8 @@ class AdminCog(commands.Cog, name="Admin Cog"):
     @commands.has_permissions(ban_members=True)
     @app_commands.describe(member="The member to ban", reason="The reason for the ban")
     async def ban_command(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = None):
+        if ctx.interaction == None:
+            await ctx.message.delete()
         if member == None and reason == None:
             embed=discord.Embed(
                 title='**Command: Ban**',
@@ -57,6 +59,8 @@ class AdminCog(commands.Cog, name="Admin Cog"):
     @commands.has_permissions(kick_members=True)
     @app_commands.describe(member="The member to kick", reason="The reason for kicking the member")
     async def kick_command(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = None):
+        if ctx.interaction == None:
+            await ctx.message.delete()
         if member == None and reason == None:
             embed=discord.Embed(
                 title='**Command: !kick**',
@@ -93,6 +97,8 @@ class AdminCog(commands.Cog, name="Admin Cog"):
     @commands.has_permissions(ban_members=True)
     @app_commands.describe(member="The member to unban")
     async def unban_command(self, ctx: commands.Context, *, member: discord.User = None):
+        if ctx.interaction == None:
+            await ctx.message.delete()
         if member == None:
             embed=discord.Embed(
                 title='**Command: !unban**',
@@ -129,6 +135,8 @@ class AdminCog(commands.Cog, name="Admin Cog"):
     @commands.has_permissions(manage_roles=True)
     @app_commands.describe(member="The member to mute", time="The amount of time to mute the member for", reason="The reason for muting the member")
     async def mute_command(self, ctx: commands.Context, member: discord.Member = None, time: str = None, *, reason: str = None):
+        if ctx.interaction == None:
+            await ctx.message.delete()
         if member == None and time == None and reason == None:
             embed=discord.Embed(
                 title='**Command: !mute**',
@@ -179,6 +187,8 @@ class AdminCog(commands.Cog, name="Admin Cog"):
                     time = time * 60 * 60 * 24
                     await asyncio.sleep(time)
             await member.remove_roles(role)
+            pass
+        pass
 
     pass
 
