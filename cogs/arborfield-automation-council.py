@@ -14,7 +14,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @commands.guild_only()
     async def council(self, ctx):
         embed = discord.Embed(
-            title="arborfield City Council",
+            title="Arborfield City Council",
             description="Here is a list of the current city council members:",
             color=discord.Color.dark_blue()
             )
@@ -35,8 +35,10 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         if interaction.channel.id == 854761365150629898:
             if first == "True":
                 await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\n Floor is open for debate. Say \"I\" to be recognized. (<@&581574409832366086>)")
+                print(f"{interaction.user} has announced the first item on the docket. Item: {docket_item.title()}")
             else:
                 await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\n Floor is open for debate. Say \"I\" to be recognized. (<@&581574409832366086>)")
+                print(f"{interaction.user} has announced the next item on the docket. Item: {docket_item.title()}")
             pass
         pass
 
@@ -48,11 +50,13 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         if session_type == "In-Game":
             channel = ctx.bot.get_channel(646541531523710996)
             await channel.send(f"**An in-game City Council Session is starting.**\n\nPlease join at the following link: <https://www.roblox.com/games/579211007/Stapleton-County-Firestone> \n\n@here")
+            print(f"{ctx.author} has started an in-game city council session.")
         elif session_type == "Discord":
             channel = ctx.bot.get_channel(854761365150629898)
             channel2 = ctx.bot.get_channel(625302673796890624)
             await channel.send(f"{ctx.author.mention} has called this council into order at {datetime.datetime.now().strftime('%I:%M %p')} EST. on this {datetime.datetime.now().strftime('%A, %B %d, %Y')}. If in attendance, make yourself present by stating \"I\". Once we reach a quorum, we will proceed.\n\nRefrain from deleting or editing your messages after they've been sent as this may interfere with the record of fact.\n\n<@&581574409832366086>")
             await channel2.send(f"**A Discord City Council Session is starting.**\n\n<#854761365150629898> \n\n@here")
+            print(f"{ctx.author} has started a Discord city council session.")
         else:
             raise commands.BadArgument
         pass
@@ -65,6 +69,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         if session_type == "Discord":
             if ctx.channel.id == 854761365150629898:
                 await ctx.send("The session has been adjourned.")
+                print(f"{ctx.author} has ended a Discord city council session.")
             else:
                 if ctx.interaction == None:
                     await ctx.message.delete()
@@ -72,6 +77,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         elif session_type == "In-Game":
             channel = ctx.bot.get_channel(646541531523710996)
             await channel.send("The session has been adjourned.")
+            print(f"{ctx.author} has ended an in-game city council session.")
             pass
         else:
             raise commands.BadArgument
@@ -91,6 +97,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                 }
                 await ctx.channel.edit(overwrites=overwrite)
                 await ctx.send(f"{member.mention}: you have the floor.")
+                print(f"{ctx.author} has given {member} the floor.")
         else:
             if ctx.interaction == None:
                 await ctx.message.delete()
@@ -112,6 +119,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                 }
                 await ctx.channel.edit(overwrites=overwrite)
                 await ctx.send(f"{member.mention} has been dismissed from the floor.", ephemeral=True)
+                print(f"{ctx.author} has dismissed {member} from the floor.")
         else:
             if ctx.interaction == None:
                 await ctx.message.delete()
@@ -125,9 +133,15 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @app_commands.describe(bill_name="The name of the bill bring proposed.", bill_link="The link to the bill being proposed.")
     async def propose(self, ctx, *, bill_name, bill_link):
         if ctx.channel.id == 1004455652623646880:
-            if ctx.interaction == None:
-                await ctx.message.delete()
-            await ctx.send(f"**{ctx.author.mention}** has proposed a bill and is looking for co-sponsors. \n\n**Bill Name:** \"{bill_name}\" \n\n**Bill Link:** {bill_link} \n\nIf you would like to co-sponsor this bill, please respond with \"Support\" or \"Sponsor\" @here.")
+            if bill_link.startswith("https://docs.google.com/document/d/"):
+                if ctx.interaction == None:
+                    await ctx.message.delete()
+                await ctx.send(f"**{ctx.author.mention}** has proposed a bill and is looking for co-sponsors. \n\n**Bill Name:** \"{bill_name}\" \n\n**Bill Link:** {bill_link} \n\nIf you would like to co-sponsor this bill, please respond with \"Support\" or \"Sponsor\" @here.")
+                print(f"{ctx.author} has proposed a bill. Bill: {bill_name} | Link: {bill_link}")
+            else:
+                if ctx.interaction == None:
+                    await ctx.message.delete()
+                raise commands.UserInputError("The bill link must be a Google Docs link.")
         else:
             raise commands.UserInputError("This command can only be used in <#1004455652623646880>.")
             pass
@@ -142,6 +156,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         if ctx.channel.id == 1004455652623646880:
             if trello_link.startswith("https://trello.com/c/"):
                 await ctx.send(f"{trello_link} \n\n <@&940169028683563039>")
+                print(f"{ctx.author} has sent a proposal to the City Attorney's Office for review.")
             else:
                 raise commands.BadArgument("The link provided needs to be a Trello card.")
         else:
@@ -160,6 +175,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                 if trello_link.startswith("https://trello.com/c/"):
                     await channel.send(f"{trello_link} \n\n <@&578723625390309390>")
                     await ctx.send("The bill has been sent to the mayor for signature.")
+                    print(f"{ctx.author} has sent a bill to the mayor for signature.")
                 else:
                     raise commands.BadArgument("The link provided needs to be a Trello card.")
             elif ctx.channel.id == 625322290774671365:
@@ -168,6 +184,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                 if trello_link.startswith("https://trello.com/c/"):
                     await channel.send(f"{trello_link} \n\n <@&578723625390309390>")
                     await ctx.send("Proposal sent to the mayor for signature.", ephemeral=True)
+                    print(f"{ctx.author} has sent a proposal to the mayor for signature.")
                 else:
                     raise commands.BadArgument("The link provided needs to be a Trello card.")
             else:
@@ -182,6 +199,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                     if trello_link.startswith("https://trello.com/c/"):
                         await channel.send(f"{trello_link} \n\n <@&581574602212507648> Approved and added to the docket.")
                         await ctx.send("Presiding officer notified.", ephemeral=True)
+                        print(f"{ctx.author} has sent a proposal to the presiding officer.")
                     else:
                         raise commands.BadArgument("The link provided needs to be a Trello card.")
                 else:
