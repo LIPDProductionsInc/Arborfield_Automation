@@ -18,7 +18,7 @@ class HelpCog(commands.Cog, name="Help Cog"):
             )
         embed.add_field(name="Commands", value="`help` `ping` `serverinfo` `userinfo` `avatar`", inline=False)
         embed.add_field(name="Moderation", value="`ban` `kick` `unban`", inline=False)
-        embed.set_footer(text=f"Arborfield Automation | Developed by {self.bot.owner}", icon_url=str(self.bot.avatar_url))
+        embed.set_footer(text=f"Arborfield Automation | Developed by {self.bot.owner}", icon_url=str(self.bot.user.avatar))
         await ctx.send(embed=embed)
         pass
 
@@ -30,7 +30,7 @@ class HelpCog(commands.Cog, name="Help Cog"):
             description="Here is a list of commands you can use with arborfield Automation.",
             color=discord.Color.dark_blue
             )
-            embed.set_footer(text=f"Arborfield Automation | Developed by {self.bot.owner}", icon_url=str(self.bot.avatar_url))
+            embed.set_footer(text=f"Arborfield Automation | Developed by {self.bot.owner}", icon_url=str(self.bot.user.avatar))
             await ctx.send(embed=embed)
             if command is None:
                 embed = discord.Embed(title="Help", description="Here's a list of all my commands:", color=0x00ff00)
