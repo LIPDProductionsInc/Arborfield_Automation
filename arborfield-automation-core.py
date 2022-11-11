@@ -29,6 +29,7 @@ initial_extensions = ['cogs.arborfield-automation-admin',
                       'cogs.arborfield-automation-council',
                       'cogs.arborfield-automation-emergency',
                       'cogs.arborfield-automation-errors',
+                      'cogs.arborfield-automation-events',
                       'cogs.arborfield-automation-fun',
                       'cogs.arborfield-automation-help',
                       'cogs.arborfield-automation-owner'
