@@ -39,8 +39,11 @@ class CommandErrorHandler(commands.Cog, name="Command Error Handler"):
         error = getattr(error, 'original', error)
 
         if isinstance(error, ignored):
-            print('Unknown command sent')
-            await ctx.send(':x: | I do not know that command. `!help` has a list of commands that can be used.')
+            if ctx.message.content.startswith('??') or ctx.message.content.startswith('!!'):
+                return
+            else:
+                print('Unknown command sent')
+                await ctx.send(':x: | I do not know that command. `!help` has a list of commands that can be used.')
 
         elif isinstance(error, commands.DisabledCommand):
             await ctx.send(f'{ctx.command} has been disabled.')
