@@ -34,10 +34,10 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     async def docket(self, interaction:discord.Interaction, first:Literal["True", "False"], docket_item:str, docket_link:str):
         if interaction.channel.id == 854761365150629898:
             if first == "True":
-                await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\n Floor is open for debate. Say \"I\" to be recognized. (<@&581574409832366086>)")
+                await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
                 print(f"{interaction.user} has announced the first item on the docket. Item: {docket_item.title()}")
             else:
-                await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\n Floor is open for debate. Say \"I\" to be recognized. (<@&581574409832366086>)")
+                await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
                 print(f"{interaction.user} has announced the next item on the docket. Item: {docket_item.title()}")
             pass
         pass
@@ -212,6 +212,20 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
             raise commands.BadArgument("The location provided needs to be either Mayor or Docket.")
             pass
         pass
+
+    @commands.hybrid_command(name="debate", description="Opens or closes the floor for debate on a proposal.")
+    @commands.guild_only()
+    @commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648)
+    @app_commands.describe(status="The status of the debate.")
+    async def debate(self, ctx, status: Literal["Open", "Close"]):
+        if ctx.channel.id == 625322290774671365:
+            if ctx.interaction == None:
+                await ctx.message.delete()
+            await ctx.send(f"The floor is now {status.lower()} for debate. {f'<@&581574409832366086>' if status == 'Open' else ''}")
+            print(f"{ctx.author} has {status.lower()}ed the floor for debate.")
+        else:
+            raise commands.UserInputError("This command can only be used in <#625322290774671365>.")
+            pass
 
     @commands.hybrid_command(name="charter", description="Sends a link to the City Charter.")
     @commands.guild_only()
