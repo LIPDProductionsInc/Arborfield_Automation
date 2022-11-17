@@ -37,7 +37,6 @@ class EventsCog(commands.Cog, name="Events Cog"):
                 description = f'**Message deleted in** {message.channel.mention} [Jump to Message]({link})'
                 )
             embed.add_field(name='Message:', value=f'{message.content}', inline=False)
-            '''Get the person who deleted the message from the audit log and add it as an embed field'''
             async for entry in message.guild.audit_logs(limit=1, action=discord.AuditLogAction.message_delete):
                 if entry.target == message.author:
                     embed.add_field(name='Deleted By:', value=f'{entry.user.mention}', inline=False)
