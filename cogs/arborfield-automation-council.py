@@ -34,11 +34,11 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     async def docket(self, interaction:discord.Interaction, first:Literal["True", "False"], docket_item:str, docket_link:str):
         if interaction.channel.id == 854761365150629898:
             if first == "True":
-                message = await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
+                message = await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
                 await message.add_reaction("aye:897181715141898240")
                 print(f"{interaction.user} has announced the first item on the docket. Item: {docket_item.title()}")
             else:
-                message = await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
+                message = await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
                 await message.add_reaction("aye:897181715141898240")
                 print(f"{interaction.user} has announced the next item on the docket. Item: {docket_item.title()}")
             pass
