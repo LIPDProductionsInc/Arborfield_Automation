@@ -21,7 +21,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         embed.add_field(name="Mayor", value=ctx.guild.get_role(578723625390309390).members[0].mention if len(ctx.guild.get_role(578723625390309390).members) > 0 else "VACANT", inline=False)
         embed.add_field(name="Deputy Mayor", value=ctx.guild.get_role(806150833842421760).members[0].mention if len(ctx.guild.get_role(806150833842421760).members) > 0 else "VACANT", inline=True)
         embed.add_field(name="Council Chairperson", value=ctx.guild.get_role(581574602212507648).members[0].mention if len(ctx.guild.get_role(581574602212507648).members) > 0 else "VACANT", inline=False)
-        embed.add_field(name="City Council Members", value="\n".join([member.mention for member in ctx.guild.members if discord.utils.get(member.roles, id=581574409832366086)]), inline=True)
+        embed.add_field(name="City Council Members", value="\n".join([member.mention for member in ctx.guild.members if discord.utils.get(member.roles, id=581574409832366086) and not discord.utils.get(member.roles, id=578723625390309390) and not discord.utils.get(member.roles, id=806150833842421760) and not discord.utils.get(member.roles, id=581574602212507648)]), inline=True)
         embed.set_footer(text=f"Arborfield Automation | Developed by {self.bot.owner} | Information Accurate As Of:", icon_url=str(self.bot.user.avatar))
         embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
@@ -35,11 +35,13 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         if interaction.channel.id == 854761365150629898:
             if first == "True":
                 message = await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
-                await message.add_reaction("aye:897181715141898240")
+                react = await interaction.original_response(message)
+                await react.add_reaction("aye:897181715141898240")
                 print(f"{interaction.user} has announced the first item on the docket. Item: {docket_item.title()}")
             else:
                 message = await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
-                await message.add_reaction("aye:897181715141898240")
+                react = await interaction.original_response(message)
+                await react.add_reaction("aye:897181715141898240")
                 print(f"{interaction.user} has announced the next item on the docket. Item: {docket_item.title()}")
             pass
         pass
