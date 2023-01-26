@@ -15,7 +15,11 @@ class CommandErrorHandler(commands.Cog, name="Command Error Handler"):
 
     def __init__(self, bot):
         self.bot = bot
-        bot.tree.on_error = self.on_app_command_error
+    
+    def cog_load(self):
+        tree = self.bot.tree
+        self._old_tree_error = tree.on_error
+        tree.on_error = self.on_app_command_error
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
