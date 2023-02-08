@@ -11,7 +11,7 @@ class EmergencyCog(commands.Cog, name="Arborfield Alert System Cog"):
 
     @commands.command(name="emergency-setup", description="Sets up the emergency alert system")
     async def emergency(self, ctx):
-        if ctx.author == discord.utils.get(ctx.guild.roles, id=578723625390309390) or ctx.author == self.bot.owner:
+        if ctx.author == discord.utils.get(ctx.guild.roles, id=578723625390309390) or ctx.author == discord.utils.get(ctx.guild.roles, id=806150833842421760) or ctx.author == self.bot.owner:
             embed = discord.Embed(
                 title="Arborfield Emergency Alert System",
                 colour=discord.Colour.default(),
@@ -22,7 +22,7 @@ class EmergencyCog(commands.Cog, name="Arborfield Alert System Cog"):
         pass
 
     @commands.hybrid_command(name="emergency-send", description="Sends an emergency alert")
-    @commands.check_any(commands.has_role(578723625390309390), commands.is_owner())
+    @commands.check_any(commands.has_any_role(578723625390309390, 806150833842421760), commands.is_owner())
     @commands.guild_only()
     async def emergency_send(self, ctx, level:Literal["Green", "Yellow", "Red"], *, message: str = None):
         channel = ctx.bot.get_channel(999011771140546600)
