@@ -39,7 +39,7 @@ class EmergencyCog(commands.Cog, name="Arborfield Alert System Cog"):
                 description=f"{message}"
             )
             embed.set_footer(text=f"Issued by {ctx.author} at")
-            embed.timestamp = datetime.datetime.utcnow()
+            embed.timestamp = datetime.datetime.now()
         elif level == "Red":
             embed = discord.Embed(
                 title="Arborfield Emergency Alert System",
@@ -47,7 +47,7 @@ class EmergencyCog(commands.Cog, name="Arborfield Alert System Cog"):
                 description=f"**Active Emergency**\n\n{message}"
             )
             embed.set_footer(text=f"Issued by {ctx.author} at")
-            embed.timestamp = datetime.datetime.utcnow()
+            embed.timestamp = datetime.datetime.now()
             await ctx.send("Alert sent!", ephemeral=True)
         if ctx.channel.id == 999011771140546600:
             if ctx.interaction == None:
