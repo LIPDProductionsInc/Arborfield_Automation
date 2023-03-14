@@ -43,7 +43,7 @@ class CommandErrorHandler(commands.Cog, name="Command Error Handler"):
         error = getattr(error, 'original', error)
 
         if isinstance(error, ignored):
-            if ctx.message.content.startswith('??') or ctx.message.content.startswith('!!'):
+            if ctx.message.content.startswith('??') or ctx.message.content.startswith('!!') or ctx.message.content.startswith('?*') or ctx.message.content.startswith('!*'):
                 return
             else:
                 print('Unknown command sent')
