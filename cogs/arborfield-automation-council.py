@@ -154,7 +154,8 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
             await ctx.message.delete()
         if ctx.channel.id == 1004455652623646880:
             if trello_link.startswith("https://trello.com/c/"):
-                await ctx.send(f"{trello_link} \n\n <@&940169028683563039>")
+                channel = ctx.bot.get_channel(940193302777565224)
+                await channel.send(f"{trello_link} \n\n <@&940169028683563039>")
                 print(f"{ctx.author} has sent a proposal to the City Attorney's Office for review.")
             else:
                 raise commands.BadArgument("The link provided needs to be a Trello card.")
