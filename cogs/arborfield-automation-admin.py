@@ -19,7 +19,7 @@ class AdminCog(commands.Cog, name="Admin Cog"):
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     @app_commands.describe(member="The member to ban", reason="The reason for the ban", save_messages="Whether or not to save messages from the user")
-    async def ban_command(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = None, save_messages:Literal[True,False]=True):
+    async def ban_command(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = None, save_messages:Literal["True","False"]="True"):
         if ctx.interaction == None:
             await ctx.message.delete()
         if member == None and reason == None:
@@ -38,7 +38,7 @@ class AdminCog(commands.Cog, name="Admin Cog"):
             )
         else:
             #channel = ctx.bot.get_channel(os.getenv("LogChannel"))
-            if save_messages == True:
+            if save_messages == "True":
                 await member.ban(reason=reason, delete_message_days=0)
             else:
                 await member.ban(reason=reason)
