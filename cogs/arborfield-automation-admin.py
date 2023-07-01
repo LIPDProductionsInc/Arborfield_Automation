@@ -2,9 +2,11 @@ import discord
 import asyncio
 import datetime
 import os
+import typing
 
 from discord import app_commands
 from discord.ext import commands
+from typing import Literal
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -16,8 +18,8 @@ class AdminCog(commands.Cog, name="Admin Cog"):
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    @app_commands.describe(member="The member to ban", reason="The reason for the ban")
-    async def ban_command(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = None):
+    @app_commands.describe(member="The member to ban", reason="The reason for the ban", save_messages="Whether or not to save messages from the user")
+    async def ban_command(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = None, save_messages:Literal[True,False]=True):
         if ctx.interaction == None:
             await ctx.message.delete()
         if member == None and reason == None:
@@ -36,7 +38,10 @@ class AdminCog(commands.Cog, name="Admin Cog"):
             )
         else:
             #channel = ctx.bot.get_channel(os.getenv("LogChannel"))
-            await member.ban(reason=reason)
+            if save_messages == True:
+                await member.ban(reason=reason, delete_message_days=0)
+            else:
+                await member.ban(reason=reason)
             embed=discord.Embed(
                 colour=discord.Color.green(),
                 description=f''':white_check_mark: ***{member} was banned*** | {reason}'''
