@@ -45,11 +45,11 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                 print(f"{interaction.user} has announced the next item on the docket. Item: {docket_item.title()}")
         elif interaction.channel.id == 1124569802950840442:
             if first == "True":
-                message = await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
+                message = await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item.")
                 #react = await interaction.original_response(message)
                 await message.add_reaction("aye:897181715141898240")
             else:
-                message = await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
+                message = await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item.")
                 #react = await interaction.original_response(message)
                 await message.add_reaction("aye:897181715141898240")
                 pass
