@@ -49,6 +49,19 @@ class EventsCog(commands.Cog, name="Events Cog"):
             pass
         pass
 
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        if payload.channel_id == 854761365150629898:
+            for role in payload.member.roles:
+                if role.id != 581574409832366086:
+                    channel = self.bot.get_channel(payload.channel_id)
+                    message = await channel.fetch_message(payload.message_id)
+                    await message.remove_reaction(payload.emoji, payload.member)
+                    pass
+                pass
+            pass
+        pass
+
     pass
 
 async def setup(bot):
