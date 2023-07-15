@@ -29,7 +29,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
 
     @app_commands.command(name="docket", description="Has the bot announce the next item on the city council docket.")
     @app_commands.guild_only()
-    @app_commands.check_any(app_commands.is_owner(), app_commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648))
+    @commands.check_any(commands.is_owner(), commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648))
     @app_commands.describe(first="True of False: This is the first item on the docket for the session.", docket_item="The name of the item on the docket.", docket_link="The Trello link to the item on the docket.")
     async def docket(self, interaction:discord.Interaction, first:Literal["True", "False"], docket_item:str, docket_link:str):
         if interaction.channel.name.startswith("council-session"):
