@@ -16,7 +16,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         embed = discord.Embed(
             title="Arborfield City Council",
             description="Here is a list of the current city council members:",
-            color=discord.Color.dark_blue()
+            color=discord.Color.dark_red()
             )
         embed.add_field(name="Mayor", value=ctx.guild.get_role(578723625390309390).members[0].mention if len(ctx.guild.get_role(578723625390309390).members) > 0 else "VACANT", inline=False)
         embed.add_field(name="Deputy Mayor", value=ctx.guild.get_role(806150833842421760).members[0].mention if len(ctx.guild.get_role(806150833842421760).members) > 0 else "VACANT", inline=True)
@@ -30,31 +30,23 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @app_commands.command(name="docket", description="Has the bot announce the next item on the city council docket.")
     @app_commands.guild_only()
     @app_commands.check_any(app_commands.is_owner(), app_commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648))
-    @app_commands.describe(first="True of False: This is the first item on the docket for the session.", docket_item = "The name of the item on the docket.", docket_link = "The Trello link to the item on the docket.")
+    @app_commands.describe(first="True of False: This is the first item on the docket for the session.", docket_item="The name of the item on the docket.", docket_link="The Trello link to the item on the docket.")
     async def docket(self, interaction:discord.Interaction, first:Literal["True", "False"], docket_item:str, docket_link:str):
-        if interaction.channel.id == 854761365150629898:
+        if interaction.channel.name.startswith("council-session"):
             if docket_link.startswith("https://trello.com/c/") or docket_link.startswith("http://trello.com/c/"):
                 if first == "True":
-                    await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
-                    react = await interaction.original_response()
-                    await react.add_reaction("aye:897181715141898240")
+                    await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nReply to this message with \"Read\" once you have read the docket item. (<@&581574409832366086>)")
                     print(f"{interaction.user} has announced the first item on the docket. Item: {docket_item.title()}")
                 else:
-                    await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item. (<@&581574409832366086>)")
-                    react = await interaction.original_response()
-                    await react.add_reaction("aye:897181715141898240")
+                    await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nReply to this message with \"Read\" once you have read the docket item. (<@&581574409832366086>)")
                     print(f"{interaction.user} has announced the next item on the docket. Item: {docket_item.title()}")
             else:
                 raise commands.UserInputError("The link provided is not a valid Trello link.")
         elif interaction.channel.id == 1124569802950840442:
             if first == "True":
-                await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item.")
-                react = await interaction.original_response()
-                await react.add_reaction("aye:897181715141898240")
+                await interaction.response.send_message(f"The first item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nReply to this message with \"Read\" once you have read the docket item.")
             else:
-                await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nPlease react with <:aye:897181715141898240> one you have read the item.")
-                react = await interaction.original_response()
-                await react.add_reaction("aye:897181715141898240")
+                await interaction.response.send_message(f"The next item on the docket is *\"{docket_item.title()}\"*. \n\n{docket_link} \n\nReply to this message with \"Read\" once you have read the docket item.")
                 pass
             pass
         pass
@@ -62,17 +54,27 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @commands.hybrid_command(name="session", description="Starts a city council session, either in-game or on Discord.")
     @commands.guild_only()
     @commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648)
-    @app_commands.describe(session_type="The type of session to start. Either \"in-game\" or \"discord\".")
-    async def session(self, ctx, session_type:Literal["In-Game", "Discord"]):
+    @app_commands.describe(session_type="The type of session to start. Either \"in-game\" or \"discord\".", session_number="The number of the Discord session.")
+    async def session(self, ctx:commands.Context, session_type:Literal["In-Game", "Discord"], session_number:int = None) -> None:
         if session_type == "In-Game":
             channel = ctx.bot.get_channel(646541531523710996)
             await channel.send(f"**An in-game City Council Session is starting.**\n\nPlease join at the following link: <https://www.roblox.com/games/579211007/Stapleton-County-Firestone> \n\n@here")
             print(f"{ctx.author} has started an in-game city council session.")
         elif session_type == "Discord":
             channel = ctx.bot.get_channel(854761365150629898)
-            channel2 = ctx.bot.get_channel(625302673796890624)
-            await channel.send(f"{ctx.author.mention} has called this council into order at {datetime.datetime.now().strftime('%I:%M %p')} EST. on this {datetime.datetime.now().strftime('%A, %B %d, %Y')}. If in attendance, make yourself present by stating \"I\". Once we reach a quorum, we will proceed.\n\nRefrain from deleting or editing your messages after they've been sent as this may interfere with the record of fact.\n\n<@&581574409832366086>")
-            await channel2.send(f"**A Discord City Council Session is starting.**\n\n<#854761365150629898> \n\n@here")
+            overwrites = {
+                ctx.guild.get_role(578723625390309390): discord.PermissionOverwrite(send_messages=True),
+                ctx.guild.get_role(806150833842421760): discord.PermissionOverwrite(send_messages=True),
+                ctx.guild.get_role(581574602212507648): discord.PermissionOverwrite(send_messages=True),
+                ctx.guild.get_role(581574409832366086): discord.PermissionOverwrite(send_messages=True),
+                ctx.guild.get_role(941904710955327508): discord.PermissionOverwrite(view_channel=True, send_messages=False),
+                ctx.guild.default_role: discord.PermissionOverwrite(view_channel=False)
+            }
+            if session_number is None:
+                session_number = "new"
+            channel2 = await ctx.guild.create_text_channel(f"council-session-{session_number}", category=ctx.guild.get_channel(940191124037976064), overwrites=overwrites, reason="City Council Session Started")
+            await channel.send(f"**A Discord City Council Session is starting.**\n\n{channel2.mention} \n\n@here")
+            await channel2.send(f"<:Arborfield:1054103937239756800> {ctx.author.mention} has called the council into order on this {datetime.datetime.now().strftime('%A, %B %d, %Y')} at {datetime.datetime.now().strftime('%I:%M %p')}.If in attendance, make yourself present by stating \"I\". Once we reach a quorum, we will proceed.\n\nRefrain from deleting or editing your messages after they've been sent as this may interfere with the record of fact.\n\n(<@&581574409832366086>)")
             print(f"{ctx.author} has started a Discord city council session.")
         else:
             raise commands.BadArgument
@@ -84,9 +86,18 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @app_commands.describe(session_type="The type of session to end. Either \"in-game\" or \"discord\".")
     async def end_session(self, ctx, session_type:Literal["In-Game", "Discord"]):
         if session_type == "Discord":
-            if ctx.channel.id == 854761365150629898:
+            if ctx.channel.name.startswith("council-session"):
+                channel = ctx.bot.get_channel(1129573856609304606)
                 await ctx.send("The session has been adjourned.")
                 print(f"{ctx.author} has ended a Discord city council session.")
+                overwrites = {
+                    ctx.guild.get_role(583496754712805376): discord.PermissionOverwrite(send_messages=True),
+                    ctx.guild.get_role(1087922383698014279): discord.PermissionOverwrite(send_messages=True),
+                    ctx.guild.get_role(941904710955327508): discord.PermissionOverwrite(view_channel=True, send_messages=False),
+                    ctx.guild.default_role: discord.PermissionOverwrite(view_channel=False)
+                }
+                await ctx.channel.edit(category=ctx.guild.get_channel(761730715024097311), reason="Session Ended", overwrites=overwrites, position=0)
+                await channel.send(f"<@&583496754712805376> <@&1087922383698014279>\n\nHi, the session in {ctx.channel.mention} has been adjourned and is awaiting transcribing!")
             else:
                 if ctx.interaction == None:
                     await ctx.message.delete()
@@ -111,6 +122,17 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
             else:
                 overwrite = discord.PermissionOverwrite(send_messages=True, embed_links=True)
                 await ctx.channel.set_permissions(member, overwrite=overwrite)
+                channel = ctx.bot.get_channel(1040629489803202560)
+                embed = discord.Embed(
+                    title="Floor Given",
+                    colour=discord.Color.dark_red()
+                )
+                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.display_avatar)
+                embed.add_field(name="Floor Given To:", value=member.mention, inline=False)
+                embed.add_field(name="Given By:", value=ctx.author.mention, inline=False)
+                embed.set_footer(text=f"ID: {ctx.author.id}")
+                embed.timestamp = datetime.datetime.now()
+                await channel.send(embed=embed)
                 await ctx.send(f"{member.mention}: you have the floor.")
                 print(f"{ctx.author} has given {member} the floor.")
         else:
@@ -130,6 +152,17 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                 raise commands.BadArgument("This person cannot be dismissed like this in the session.")
             else:
                 await ctx.channel.set_permissions(member, overwrite=None)
+                channel = ctx.bot.get_channel(1040629489803202560)
+                embed = discord.Embed(
+                    title="Dismissed From Floor",
+                    colour=discord.Color.dark_red()
+                )
+                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.display_avatar)
+                embed.add_field(name="User Dismissed:", value=member.mention, inline=False)
+                embed.add_field(name="Dismissed By:", value=ctx.author.mention, inline=False)
+                embed.set_footer(text=f"ID: {ctx.author.id}")
+                embed.timestamp = datetime.datetime.now()
+                await channel.send(embed=embed)
                 await ctx.send(f"{member.mention} has been dismissed from the floor.", ephemeral=True)
                 print(f"{ctx.author} has dismissed {member} from the floor.")
         else:
@@ -202,11 +235,11 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                 else:
                     raise commands.BadArgument("The link provided needs to be a Trello card.")
             else:
-                raise commands.UserInputError("This command can only be used in <#625322290774671365> or a council session channel.")
+                raise commands.UserInputError("This command can only be used in a council session")
                 pass
         elif location == "Docket":
             if discord.utils.get(ctx.author.roles, id=940169028683563039):
-                if ctx.channel.id == 625322290774671365:
+                if ctx.channel.id == 940193302777565224:
                     if ctx.interaction == None:
                         await ctx.message.delete()
                     channel = ctx.bot.get_channel(947186552839237674)
@@ -217,7 +250,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                     else:
                         raise commands.BadArgument("The link provided needs to be a Trello card.")
                 else:
-                    raise commands.UserInputError("This command can only be used in <#625322290774671365>.")
+                    raise commands.UserInputError("This command can only be used in <#940193302777565224>.")
                     pass
             else:
                 raise commands.MissingRole(missing_role=940169028683563039)
@@ -232,13 +265,13 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648)
     @app_commands.describe(status="The status of the debate.")
     async def debate(self, ctx, status: Literal["Open", "Close"]):
-        if ctx.channel.id == 854761365150629898:
+        if ctx.channel.name.startswith("council-session"):
             if ctx.interaction == None:
                 await ctx.message.delete()
             await ctx.send(f"The floor is now {status.lower()} for debate. {f'<@&581574409832366086>' if status == 'Open' else ''}")
             print(f"{ctx.author} has {status.lower()}ed the floor for debate.")
         else:
-            raise commands.UserInputError("This command can only be used in <#625322290774671365>.")
+            raise commands.UserInputError("This command can only be used in a council session.")
             pass
 
     @commands.hybrid_command(name="charter", description="Sends a link to the City Charter.")
