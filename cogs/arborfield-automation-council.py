@@ -215,9 +215,9 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @commands.guild_only()
     @commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648, 940169028683563039)
     @app_commands.describe(trello_link="The link to the Trello card for the proposal.", location="The location to send the proposal to.")
-    async def send(self, ctx, location: Literal["Mayor", "Docket"], trello_link):
+    async def send(self, ctx, location: Literal["Mayor", "Docket"], trello_link:str):
         if location == "Mayor":
-            channel = self.bot.get_channel(762320251441774632)
+            channel = self.bot.get_channel(940193511272251403)
             if ctx.channel.name.startswith("council-session"):
                 if trello_link.startswith("https://trello.com/c/"):
                     await channel.send(f"{trello_link} \n\n <@&578723625390309390>")
