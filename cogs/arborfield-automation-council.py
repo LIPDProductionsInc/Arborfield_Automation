@@ -221,16 +221,24 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
             channel = self.bot.get_channel(940193511272251403)
             if ctx.channel.name.startswith("council-session"):
                 if trello_link.startswith("https://trello.com/c/"):
-                    await channel.send(f"{trello_link} \n\n <@&578723625390309390>")
+                    if len(ctx.guild.get_role(987153251889721435).members) > 0:
+                        ping = "<@987153251889721435>"
+                    else:
+                        ping = "<@&578723625390309390>"
+                    await channel.send(f"{trello_link} \n\n{ping}")
                     await ctx.send("The bill has been sent to the mayor for signature.")
                     print(f"{ctx.author} has sent a bill to the mayor for signature.")
                 else:
                     raise commands.BadArgument("The link provided needs to be a Trello card.")
-            elif ctx.channel.id == 625322290774671365:
                 if ctx.interaction == None:
                     await ctx.message.delete()
+            elif ctx.channel.id == 947186552839237674:
                 if trello_link.startswith("https://trello.com/c/"):
-                    await channel.send(f"{trello_link} \n\n <@&578723625390309390>")
+                    if len(ctx.guild.get_role(987153251889721435).members) > 0:
+                        ping = "<@987153251889721435>"
+                    else:
+                        ping = "<@&578723625390309390>"
+                    await channel.send(f"{trello_link} \n\n{ping}")
                     await ctx.send("Proposal sent to the mayor for signature.", ephemeral=True)
                     print(f"{ctx.author} has sent a proposal to the mayor for signature.")
                 else:
