@@ -228,8 +228,8 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                     else:
                         ping = "<@&578723625390309390>"
                     await channel.send(f"{trello_link} \n\n{ping}")
-                    await ctx.send("The bill has been sent to the mayor for signature.")
-                    print(f"{ctx.author} has sent a bill to the mayor for signature.")
+                    await ctx.send("The bill has been sent to the mayor's office for signature.")
+                    print(f"{ctx.author} has sent a bill to the mayor's office for signature.")
                 else:
                     raise commands.BadArgument("The link provided needs to be a Trello card.")
             elif ctx.channel.id == 947186552839237674:
@@ -239,8 +239,8 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
                     else:
                         ping = "<@&578723625390309390>"
                     await channel.send(f"{trello_link} \n\n{ping}")
-                    await ctx.send("Proposal sent to the mayor for signature.", ephemeral=True)
-                    print(f"{ctx.author} has sent a proposal to the mayor for signature.")
+                    await ctx.send("Proposal sent to the mayor's office for signature.", ephemeral=True)
+                    print(f"{ctx.author} has sent a proposal to the mayor's office for signature.")
                 else:
                     raise commands.BadArgument("The link provided needs to be a Trello card.")
             else:
