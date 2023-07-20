@@ -202,7 +202,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         if ctx.channel.id == 1004455652623646880:
             if trello_link.startswith("https://trello.com/c/"):
                 channel = ctx.bot.get_channel(940193302777565224)
-                await channel.send(f"{trello_link} \n\n <@&940169028683563039>")
+                await channel.send(f"{trello_link} \n\n<@&940169028683563039> \n\nSent by: {ctx.author.mention}")
                 await ctx.send("The proposal has been sent to the City Attorney's Office for review.", ephemeral=True)
                 print(f"{ctx.author} has sent a proposal to the City Attorney's Office for review.")
             else:
