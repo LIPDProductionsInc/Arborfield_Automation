@@ -62,7 +62,7 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
             await message.publish()
             print(f"{ctx.author} has started an in-game city council session.")
         elif session_type == "Discord":
-            channel = ctx.bot.get_channel(854761365150629898)
+            channel = ctx.bot.get_channel(625302673796890624)
             overwrites = {
                 ctx.guild.get_role(578723625390309390): discord.PermissionOverwrite(send_messages=True),
                 ctx.guild.get_role(806150833842421760): discord.PermissionOverwrite(send_messages=True),
