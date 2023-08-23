@@ -1,10 +1,61 @@
 import discord
 import datetime
+import sys
+import traceback
 
 from discord import app_commands
 from discord.ext import commands
 from datetime import timedelta
 from typing import Literal
+
+class LeaveofAbsenceModal(discord.ui.Modal, title="Leave of Absence Form"):
+
+    startdate = discord.ui.TextInput(
+        label="What is the start of your leave of absence?",
+        style=discord.TextStyle.short,
+        placeholder="Enter the start date here...",
+        required=True
+    )
+
+    enddate = discord.ui.TextInput(
+        label="What is the end of your leave of absence?",
+        style=discord.TextStyle.short,
+        placeholder="Enter the estimated end date here...",
+        required=True
+    )
+
+    reason = discord.ui.TextInput(
+        label="What is the reason for your leave of absence?",
+        style=discord.TextStyle.long,
+        placeholder="Enter the reason here...",
+        required=True
+    )
+
+    async def on_submit(self, interaction: discord.Interaction):
+        channel = interaction.client.get_channel(947186552839237674)
+        embed = discord.Embed(
+            title="Leave of Absence Request",
+            colour=discord.Color.dark_blue()
+        )
+        embed.add_field(name="Start Date", value=self.startdate.value, inline=True)
+        embed.add_field(name="Estimated End Date", value=self.enddate.value, inline=True)
+        embed.add_field(name="Reason", value=self.reason.value, inline=False)
+        embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar)
+        embed.set_footer(text=f"ID: {interaction.user.id}")
+        embed.timestamp = datetime.datetime.now()
+        message = await channel.send("<@&581574602212507648>", embed=embed)
+        await message.add_reaction("✅")
+        await message.add_reaction("❌")
+        await interaction.response.send_message(f"Your leave of absence has been submitted. You will be notified when it has been approved or denied.", ephemeral=True)
+        pass
+
+    async def on_error(self, error, interaction: discord.Interaction):
+        await interaction.response.send_message(f"An error occurred while processing your leave of absence request. Please try again later.", ephemeral=True)
+        print("Ignoring exception in modal {}:".format(self), file=sys.stderr)
+        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        pass
+
+    pass
 
 class CouncilCog(commands.Cog, name="Council Commands Cog"):
     def __init__(self, bot: commands.Bot) -> None:
@@ -294,6 +345,13 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
     @commands.has_any_role(578723625390309390, 806150833842421760, 581574602212507648, 581574409832366086)
     async def template(self, ctx):
         await ctx.send("Here is the link to the Bill Templates: \n <https://trello.com/c/qTPWo19z/>")
+        pass
+
+    @commands.hybrid_command(name="loa", description="Submit a leave of absence request.")
+    @commands.guild_only()
+    @commands.check_any(commands.has_role(581574409832366086), commands.is_owner())
+    async def loa(self, ctx:commands.Context) -> None:
+        await ctx.send_modal(LeaveofAbsenceModal())
         pass
 
     pass
