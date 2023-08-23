@@ -47,6 +47,7 @@ class LeaveofAbsenceModal(discord.ui.Modal, title="Leave of Absence Form"):
         await message.add_reaction("✅")
         await message.add_reaction("❌")
         await interaction.response.send_message(f"Your leave of absence has been submitted. You will be notified when it has been approved or denied.", ephemeral=True)
+        print(f"{interaction.user} has submitted a leave of absence request")
         pass
 
     async def on_error(self, error, interaction: discord.Interaction):
@@ -349,9 +350,9 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
 
     @app_commands.command(name="loa", description="Submit a leave of absence request.")
     @app_commands.guild_only()
-    @app_commands.check_any(app_commands.is_owner(), app_commands.has_any_role(581574409832366086))
+    @app_commands.checks.has_any_role(581574409832366086, 806157399014375434)
     async def loa(self, interaction: discord.Interaction):
-        await interaction.send_modal(LeaveofAbsenceModal())
+        await interaction.response.send_modal(LeaveofAbsenceModal())
         pass
 
     pass
