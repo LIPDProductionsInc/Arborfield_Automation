@@ -347,11 +347,11 @@ class CouncilCog(commands.Cog, name="Council Commands Cog"):
         await ctx.send("Here is the link to the Bill Templates: \n <https://trello.com/c/qTPWo19z/>")
         pass
 
-    @commands.hybrid_command(name="loa", description="Submit a leave of absence request.")
-    @commands.guild_only()
-    @commands.check_any(commands.has_role(581574409832366086), commands.is_owner())
-    async def loa(self, ctx:commands.Context) -> None:
-        await ctx.send_modal(LeaveofAbsenceModal())
+    @app_commands.command(name="loa", description="Submit a leave of absence request.")
+    @app_commands.guild_only()
+    @app_commands.check_any(app_commands.is_owner(), app_commands.has_any_role(581574409832366086))
+    async def loa(self, interaction: discord.Interaction):
+        await interaction.send_modal(LeaveofAbsenceModal())
         pass
 
     pass
