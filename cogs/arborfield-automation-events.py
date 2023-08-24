@@ -68,18 +68,59 @@ class EventsCog(commands.Cog, name="Events Cog"):
                         footer = embed.footer.text
                         id = footer[4:]
                         member = guild.get_member(int(id))
+                        logchannel = self.bot.get_channel(1040629489803202560)
                         if payload.emoji.name == '✅':
                             direct_message += f"The Arborfield {role.name.title()} has approved your leave of absence request.\n\n"
                             direct_message += "You cannot be in-game or active in other departments while on leave. You are **NOT** allowed to be in attendance of any council sessions while on your leave; however, once you return (if the session is still ongoing), you may \"enter\" the session (make sure you reply to the attendance message).\n\n"
                             direct_message += "If you are currently in attendance for a discord session upon this approval message, the current Presiding Officer will excuse you from the rest of the sessions and note it for the record.\n\n"
                             direct_message += f"Please contact {payload.member.mention} if you have any questions.\n\n*{payload.member.display_name}*\n*Arborfield {role.name.title()}*"
-                            await member.send(direct_message)
+                            channel = self.bot.get_channel(payload.channel_id)
+                            try:
+                                await member.send(direct_message)
+                                await channel.send(f"{payload.member.mention}: Message sent to {member.mention}.")
+                            except:
+                                await channel.send(f"I was unable to send a DM to {member.mention}.")
+                            startdate = embed.fields[0].value
+                            enddate = embed.fields[1].value
+                            embed = discord.Embed(
+                                colour = discord.Color.green(),
+                                type = "rich"
+                                )
+                            embed.set_author(name=f"Leave of Absence Request", icon_url=member.avatar)
+                            embed.add_field(name="Name:", value=f"{member.mention}", inline=False)
+                            embed.add_field(name="Timeframe of Absence:", value=f"{startdate} - {enddate}", inline=False)
+                            embed.add_field(name="Reason:", value=f"{embed.fields[2].value}", inline=False)
+                            embed.add_field(name="Status:", value="Approved", inline=False)
+                            embed.add_field(name="Approved By:", value=f"{payload.member.mention}", inline=False)
+                            embed.set_footer(text=f"IDs: Requester: {member.id} | Reviewer: {payload.member.id} | Time:")
+                            embed.timestamp = datetime.datetime.now()
+                            await logchannel.send(embed=embed)
                             print(f"{payload.member.display_name} approved {member.display_name}'s leave of absence request.")
                         elif payload.emoji.name == '❌':
                             direct_message += f"The Arborfield {role.name.title()} has **denied** your leave of absence request.\n\n"
                             direct_message += f"If you have any questions, please contact {payload.member.mention}.\n\n"
                             direct_message += f"*{payload.member.display_name}*\n*Arborfield {role.name.title()}*"
-                            await member.send(direct_message)
+                            channel = self.bot.get_channel(payload.channel_id)
+                            try:
+                                await member.send(direct_message)
+                                await channel.send(f"{payload.member.mention}: Message sent to {member.mention}.")
+                            except:
+                                await channel.send(f"I was unable to send a DM to {member.mention}.")
+                            startdate = embed.fields[0].value
+                            enddate = embed.fields[1].value
+                            embed = discord.Embed(
+                                colour = discord.Color.red(),
+                                type = "rich"
+                                )
+                            embed.set_author(name=f"Leave of Absence Request", icon_url=member.avatar)
+                            embed.add_field(name="Name:", value=f"{member.mention}", inline=False)
+                            embed.add_field(name="Timeframe of Absence:", value=f"{startdate} - {enddate}", inline=False)
+                            embed.add_field(name="Reason:", value=f"{embed.fields[2].value}", inline=False)
+                            embed.add_field(name="Status:", value="Denied", inline=False)
+                            embed.add_field(name="Denied By:", value=f"{payload.member.mention}", inline=False)
+                            embed.set_footer(text=f"IDs: Requester: {member.id} | Reviewer: {payload.member.id} | Time:")
+                            embed.timestamp = datetime.datetime.now()
+                            await logchannel.send(embed=embed)
                             print(f"{payload.member.display_name} denied {member.display_name}'s leave of absence request.")
                         else:
                             raise ValueError("Invalid emoji.")
