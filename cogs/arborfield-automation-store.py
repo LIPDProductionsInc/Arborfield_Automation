@@ -58,5 +58,28 @@ class StoretoDBCog(commands.Cog, name="Store to Database Group Commands"):
             pass
         pass
 
+    @group.command(name="employment", description="Store an employment, either by confirmation or nomination, to the database")
+    @app_commands.checks.has_any_role(583496754712805376, 1087922383698014279)
+    @app_commands.guild_only()
+    @app_commands.describe(employee="The name of the employee", member="The Discord account of the employee", appointment="Were they confirmed or nominated?", status="Did it pass or fail?", position="What position were they employed to?")
+    async def employment(self, interaction: discord.Interaction, employee:str, member:discord.Member, appointment:Literal["Confirmation", "Nomination"], status:Literal["Passed", "Failed"], position:str):
+        async with aiosqlite.connect("/home/pi/Documents/Arborfield_Automation/db/arborfield_backup.db") as db:
+            if member is not int:
+                member = member.id
+            try:
+                await db.execute(f"INSERT INTO employment values('{employee}', {member}, '{appointment}', '{status}', '{position}')")
+                print(f'Added {employee} to database')
+                await db.commit()
+                print('Saved')
+                await interaction.response.send_message(content="Employment stored to database!", ephemeral=True)
+            except Exception as e:
+                await interaction.response.send_message(content=f"Error: {e}", ephemeral=True)
+                print(f'Ignoring exception in command employment: {e}')
+                pass
+            pass
+        pass
+
+    pass
+
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(StoretoDBCog(bot))
