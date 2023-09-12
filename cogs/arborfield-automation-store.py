@@ -16,7 +16,7 @@ class StoretoDBCog(commands.Cog, name="Store to Database Group Commands"):
     @app_commands.checks.has_any_role(583496754712805376, 1087922383698014279)
     @app_commands.guild_only()
     @app_commands.describe(decree_name="Name of the decree", decree_number="Number of the decree", signed_by="Who signed the decree?", decree_status="Status of the decree", decree_link="Link to the decree")
-    async def decree(self, interaction: discord.Interaction, decree_name: str, decree_number: int, signed_by: str, decree_status: str, decree_link: str):
+    async def decree(self, interaction: discord.Interaction, decree_name:str, decree_number:int, signed_by:str, decree_status:Literal["Active", "Inactive", "Repealed"], decree_link:str):
         if decree_link.startswith("https://drive.google.com/file/d/") or decree_link.startswith("https://forums.stateoffirestone.com/") or decree_link.startswith("https://docs.google.com/document/d/"):
             async with aiosqlite.connect("/home/pi/Documents/Arborfield_Automation/db/arborfield_backup.db") as db:
                 try:
