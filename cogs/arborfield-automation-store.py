@@ -38,7 +38,7 @@ class StoretoDBCog(commands.Cog, name="Store to Database Group Commands"):
     @group.command(name="legislation", description="Store legislation to the database")
     @app_commands.checks.has_any_role(583496754712805376, 1087922383698014279)
     @app_commands.guild_only()
-    @app_commands.describe(legislation_name="Name of the legislation", legislation_status="Status of the legislation", legislation_link="Link to the legislation")
+    @app_commands.describe(legislation_name="Name of the legislation", legislation_type="Type of legislation", legislation_status="Status of the legislation", legislation_link="Link to the legislation")
     async def legislation(self, interaction: discord.Interaction, legislation_name:str, legislation_type:Literal["Bill", "Resolution", "Amendment", "Charter Amendment"], legislation_status:Literal["Passed", "Failed", "Vetoed", "Nullified"], legislation_link:str):
         if legislation_link.startswith("https://drive.google.com/file/d/") or legislation_link.startswith("https://forums.stateoffirestone.com/") or legislation_link.startswith("https://docs.google.com/document/d/"):
             async with aiosqlite.connect("/home/pi/Documents/Arborfield_Automation/db/arborfield_backup.db") as db:
