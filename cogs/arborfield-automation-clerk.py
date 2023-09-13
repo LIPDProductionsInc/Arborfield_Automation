@@ -18,7 +18,10 @@ class ClerkCog(commands.Cog, name="Clerk Commands"):
         if ctx.channel.name.startswith("council-session"):
             await ctx.send("`Saving...`")
             try:
-                transcript = await chat_exporter.export(ctx.channel, tz_info='EST', fancy_times=True)
+                message_count = 0
+                async for message in ctx.channel.history(limit=None):
+                    message_count += 1
+                transcript = await chat_exporter.export(ctx.channel, tz_info='EST', fancy_times=True, limit=message_count)
                 transcript_file = discord.File(io.BytesIO(transcript.encode()),filename=f"{ctx.channel.name}.html")
                 await channel.send(f"{ctx.channel.name}", file=transcript_file)
                 transcript_file = discord.File(io.BytesIO(transcript.encode()),filename=f"{ctx.channel.name}.html")
