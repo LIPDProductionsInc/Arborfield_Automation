@@ -25,6 +25,7 @@ bot = MyBot(command_prefix=get_prefix, help_command=None, case_insensitive=True,
 tree = bot.tree
 
 initial_extensions = ['cogs.arborfield-automation-admin',
+                      'cogs.arborfield-automation-clerk',
                       'cogs.arborfield-automation-commands',
                       'cogs.arborfield-automation-council',
                       'cogs.arborfield-automation-emergency',
