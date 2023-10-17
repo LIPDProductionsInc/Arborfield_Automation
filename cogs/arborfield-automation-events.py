@@ -10,7 +10,7 @@ class EventsCog(commands.Cog, name="Events Cog"):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         if before.content != after.content:
-            if before.channel.id == 854761365150629898:
+            if before.channel.name.startswith('council-session') and not before.channel.name == 'council-session-test':
                 channel = self.bot.get_channel(1040629489803202560)
                 link = "https://discordapp.com/channels/{}/{}/{}".format(before.guild.id, before.channel.id, before.id)
                 embed = discord.Embed(
@@ -29,7 +29,7 @@ class EventsCog(commands.Cog, name="Events Cog"):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if message.channel.id == 854761365150629898:
+        if message.channel.name.startswith('council-session') and not message.channel.name == 'council-session-test':
             channel = self.bot.get_channel(1040629489803202560)
             link = "https://discordapp.com/channels/{}/{}/{}".format(message.guild.id, message.channel.id, message.id)
             embed = discord.Embed(
